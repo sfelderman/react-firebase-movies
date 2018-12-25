@@ -1,7 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { moviesRef } from 'config/firebase';
 import { withRouter } from 'react-router-dom'
+import { addMovie } from 'actions/movies-actions';
 
 const INITIAL_STATE = {
     title: '',
@@ -24,20 +25,18 @@ class AddMovieView extends React.Component {
 
     onSubmit = (event) => {
         const {title, description} = this.state;
-        const {history} = this.props;
+        const {addMovie, history} = this.props;
         event.preventDefault();
         const thisRef = this;
-        moviesRef.add({
-            title,
-            description
-        }).then(function(docRef) {
-            console.log('Document written with ID: ', docRef.id);
-            thisRef.setState(INITIAL_STATE);
-            history.push('/')
-
-        }).catch(function(error) {
-            console.error('Error adding document: ', error);
-        });
+        addMovie({
+            movie: {
+                title,
+                description
+            }, callback: () => {
+                thisRef.setState(INITIAL_STATE);
+                history.push('/')
+            }
+        })
     }
 
     render() {
@@ -61,7 +60,6 @@ class AddMovieView extends React.Component {
                             className='form-control'
                             name='title'
                             value={title}
-                            // onChange={(event) => this.onEditField(event, 'title')}
                             onChange={this.onEditField}
                             onSubmit={() => {}}
                             placeholder='Enter movie title'
@@ -77,7 +75,6 @@ class AddMovieView extends React.Component {
                             onChange={this.onEditField}
                             placeholder='Enter movie description'
                             rows='3'
-                            required
                         />
                     </div>
 
@@ -88,4 +85,4 @@ class AddMovieView extends React.Component {
     }
 }
 
-export default withRouter(AddMovieView);
+export default withRouter(connect(null, {addMovie})(AddMovieView));

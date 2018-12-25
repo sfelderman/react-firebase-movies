@@ -3,12 +3,27 @@ import { moviesRef } from 'config/firebase';
 
 export const FETCH_MOVIES = 'FETCH_MOVIES';
 
-export const addMovie = newMovie => async dispatch => {
-	moviesRef.push().set(newMovie);
+export const addMovie = payload => async dispatch => {
+    moviesRef.add({
+        ...payload.movie
+    }).then(function(docRef) {
+        if (payload.callback) {
+            payload.callback();
+        }
+    }).catch(function(error) {
+        console.error('Error adding document: ', error);
+    });
 };
 
-export const deleteMovie = movieId => async dispatch => {
-	moviesRef.child(movieId).remove();
+export const deleteMovie = payload => async dispatch => {
+	moviesRef.doc(payload.movieId).delete().then(function() {
+        console.log('Document successfully deleted!');
+        if (payload.callback) {
+            payload.callback();
+        }
+    }).catch(function(error) {
+        console.error('Error removing document: ', error);
+    });
 };
 
 export const fetchMovies = () => async dispatch => {

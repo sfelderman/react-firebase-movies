@@ -8,6 +8,8 @@ import { Provider } from 'react-redux';
 import combinedReducers from './reducers';
 import reduxThunk from 'redux-thunk';
 
+import { fetchMovies } from 'actions/movies-actions';
+
 import AppRouter from './AppRouter';
 
 const initialState = {};
@@ -21,6 +23,8 @@ const store = createStore(
         applyMiddleware(reduxThunk)
     )
 );
+
+store.dispatch(fetchMovies());
 
 const root = (
     <Provider store={store}>
