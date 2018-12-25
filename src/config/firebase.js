@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-
 var config = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -9,4 +8,13 @@ var config = {
     messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID
 };
 firebase.initializeApp(config);
+
+export const db = firebase.firestore();
+
+db.settings({
+    timestampsInSnapshots: true
+});
+
+export const moviesRef = db.collection('movies');
+
 export default firebase;
