@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MovieListItem from './MovieListItem';
-import { fetchMovies } from 'actions/movies-actions'
+import { deleteMovie } from 'actions/movies-actions'
 import {Link} from 'react-router-dom';
 // import 'styles/movieList.css';
 class MovieList extends Component {
     state = {
     };
 
-    componentWillMount() {
-        this.props.fetchMovies();
-    }
-
     render() {
+        const {deleteMovie} = this.props;
         return (
             <div className='MovieList container'>
                 <div className='row justify-content-end mt-3'>
@@ -29,7 +26,9 @@ class MovieList extends Component {
 
                 <div className='row mt-3 justify-content-center'>
                     {
-                        Object.entries(this.props.movies).map(([id, movie]) => <MovieListItem key={id} id={id} movie={movie} /> )
+                        Object.entries(this.props.movies).map(([id, movie]) =>
+                            <MovieListItem key={id} id={id} movie={movie} deleteMovie={deleteMovie} />
+                        )
                     }
                 </div>
             </div>
@@ -43,4 +42,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { fetchMovies })(MovieList);
+export default connect(mapStateToProps, { deleteMovie })(MovieList);
