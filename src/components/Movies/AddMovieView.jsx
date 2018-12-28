@@ -2,11 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom'
-import { addMovie } from 'actions/movies-actions';
+import { addMovie, searchMovie } from 'actions/movies-actions';
 
 const INITIAL_STATE = {
-    title: '',
-    description: ''
+    searchValue: ''
 }
 
 class AddMovieView extends React.Component {
@@ -23,24 +22,44 @@ class AddMovieView extends React.Component {
         event.preventDefault();
     }
 
-    onSubmit = (event) => {
-        const {title, description} = this.state;
-        const {addMovie, history} = this.props;
+    onSearch = (event) => {
         event.preventDefault();
-        const thisRef = this;
+        const { searchValue } = this.state;
+        searchMovie(searchValue)
+        .then((results) => {
+            this.setState({
+                results,
+                displayResults: true
+            });
+        })
+    }
+
+    clickMovie = (event, index) => {
+        event.preventDefault();
+
+        const {addMovie, history} = this.props;
+        const {results} = this.state;
+        const movie = results[index];
+
+        const {
+            title,
+            overview,
+            poster_path,
+            backdrop_path
+        } = movie;
+
         addMovie({
-            movie: {
-                title,
-                description
-            }, callback: () => {
-                thisRef.setState(INITIAL_STATE);
-                history.push('/')
-            }
+            title,
+            overview,
+            srcImg: poster_path || backdrop_path
+        }).then((res) => {
+            this.setState(INITIAL_STATE);
+            history.push('/')
         })
     }
 
     render() {
-        const {title, description} = this.state;
+        const {displayResults, results, searchValue} = this.state;
         return (
             <div className='container'>
                 <div className='row justify-content-start mt-3'>
@@ -52,34 +71,35 @@ class AddMovieView extends React.Component {
                     </div>
                 </div>
 
-                <form onSubmit={this.onSubmit}>
+                <form onSubmit={this.onSearch}>
                     <div className='form-group'>
                         <label>Movie Title</label>
                         <input
                             type='text'
                             className='form-control'
-                            name='title'
-                            value={title}
+                            name='searchValue'
+                            value={searchValue}
                             onChange={this.onEditField}
-                            onSubmit={() => {}}
+                            onSubmit={this.onSearch}
                             placeholder='Enter movie title'
+                            autoFocus
                             required
                         />
                     </div>
-                    <div className='form-group'>
-                        <label>Movie Description</label>
-                        <textarea
-                            className='form-control'
-                            name='description'
-                            value={description}
-                            onChange={this.onEditField}
-                            placeholder='Enter movie description'
-                            rows='3'
-                        />
-                    </div>
-
-                    <button type='submit' className='btn btn-primary'>Submit</button>
                 </form>
+                {displayResults && <ul className='list-group' style={{maxHeight: '500px'}}>
+                        { results.slice(0,10).map((movie, index) =>
+                            <div onClick={(e) => this.clickMovie(e, index)} className='list-group-item card' key={movie.id}>
+                                <h5 className='card-title'>{movie.title}</h5>
+
+                                <div className='card-body'>
+                                    <p className='card-text'>{movie.overview}</p>
+                                </div>
+                            </div>
+                        )
+
+                        }
+                    </ul>}
             </div>
         )
     }

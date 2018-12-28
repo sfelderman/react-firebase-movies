@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import MovieListItem from './MovieListItem';
 import { deleteMovie } from 'actions/movies-actions'
 import {Link} from 'react-router-dom';
-// import 'styles/movieList.css';
+import 'styles/movieList.css';
 class MovieList extends Component {
     state = {
     };
