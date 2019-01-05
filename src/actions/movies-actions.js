@@ -5,7 +5,7 @@ import fetchWrapper from 'util/fetchWrapper';
 export const FETCH_MOVIES = 'FETCH_MOVIES';
 
 export const addMovie = payload => async dispatch => {
-    moviesRef.add({
+    return moviesRef.add({
         ...payload
     }).then(function(docRef) {
         return docRef;
@@ -15,18 +15,27 @@ export const addMovie = payload => async dispatch => {
 };
 
 export const deleteMovie = payload => async dispatch => {
-	moviesRef.doc(payload.movieId).delete().then(function() {
+	return moviesRef.doc(payload.id).delete().then(function() {
         console.log('Document successfully deleted!');
         if (payload.callback) {
             payload.callback();
         }
-    }).catch(function(error) {
+    }).catch(error => {
         console.error('Error removing document: ', error);
     });
 };
 
+export const toggleWatched = payload => async dispatch => {
+    return moviesRef.doc(payload.id).update({
+        watched: !(payload.watched || false)
+    }).catch(error => {
+        console.error('Error toggling watched status', error);
+    });
+
+};
+
 export const fetchMovies = () => async dispatch => {
-    moviesRef.onSnapshot(function(querySnapshot) {
+    return moviesRef.onSnapshot(function(querySnapshot) {
         let movies = {};
         querySnapshot.forEach(function(doc) {
             movies[doc.id] = doc.data();
@@ -38,11 +47,11 @@ export const fetchMovies = () => async dispatch => {
     });
 };
 
-export const searchMovie = movieTitle => {
+export const searchExternalMovie = movieTitle => {
     return fetchWrapper(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_MOVIE_DB_API_KEY}&query=${movieTitle}`)
     .then( res => {
         return res.results;
     }).catch( err => {
         console.error(err);
-    })
+    });
 };

@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom'
-import { addMovie, searchMovie } from 'actions/movies-actions';
+import { withRouter } from 'react-router-dom';
+import { addMovie, searchExternalMovie } from 'actions/movies-actions';
 
 const INITIAL_STATE = {
     searchValue: ''
-}
+};
 
 class AddMovieView extends React.Component {
     state = {
@@ -25,13 +25,13 @@ class AddMovieView extends React.Component {
     onSearch = (event) => {
         event.preventDefault();
         const { searchValue } = this.state;
-        searchMovie(searchValue)
+        searchExternalMovie(searchValue)
         .then((results) => {
             this.setState({
                 results,
                 displayResults: true
             });
-        })
+        });
     }
 
     clickMovie = (event, index) => {
@@ -45,17 +45,20 @@ class AddMovieView extends React.Component {
             title,
             overview,
             poster_path,
-            backdrop_path
+            backdrop_path,
+            tags
         } = movie;
 
         addMovie({
             title,
             overview,
-            srcImg: poster_path || backdrop_path
+            srcImg: poster_path || backdrop_path,
+            watched: false,
+            tags: ['unwatched', ...tags] //TODO
         }).then((res) => {
             this.setState(INITIAL_STATE);
-            history.push('/')
-        })
+            history.push('/');
+        });
     }
 
     render() {
