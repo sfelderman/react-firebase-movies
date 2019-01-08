@@ -2,7 +2,7 @@ import React from 'react';
 
 const IMAGE_SIZE = 500;
 
-const MovieListItem = ({id, movie, deleteMovie}) => {
+const MovieListItem = ({movie, deleteMovie, toggleWatched}) => {
     return (
         <div className='MovieListItem col-8 card mx-2 mb-3'>
             <div className='row'>
@@ -22,8 +22,13 @@ const MovieListItem = ({id, movie, deleteMovie}) => {
                             <div className='row justify-content-right my-5'>
                                 <button
                                     className='btn btn-outline-danger float-right mx-3'
-                                    onClick={() => deleteMovie({ movieId: id })}>
+                                    onClick={() => deleteMovie({...movie})}>
                                     Remove
+                                </button>
+                                <button
+                                    className={`btn btn-outline-${movie.watched ? 'info' : 'dark'} float-right mx-3`}
+                                    onClick={() => toggleWatched({...movie})}>
+                                    {movie.watched ? 'Watched' : 'Unwatched'}
                                 </button>
                             </div>
                         </div>
@@ -32,6 +37,6 @@ const MovieListItem = ({id, movie, deleteMovie}) => {
             </div>
         </div>
     );
-}
+};
 
 export default MovieListItem;
