@@ -3,29 +3,33 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { addMovie, searchExternalMovie } from 'actions/movies-actions';
+import { updateSearchValue } from 'actions/filters';
+import 'styles/AddMovieView.css';
 
-const INITIAL_STATE = {
-    searchValue: ''
-};
-
+const IMAGE_SIZE = 185;
 class AddMovieView extends React.Component {
     state = {
-        ...INITIAL_STATE
+        initialDisplay: true
+    }
+
+    componentDidMount() {
+        const {searchValue} = this.props;
+        if (searchValue) {
+            this.onSearch();
+        }
     }
 
     onEditField = (event) => {
         const target = event.target;
         if (!target) return;
-        const field = target.name;
-
-        this.setState({ [field]: target.value })
+       const searchValue = target.value;
+        this.props.updateSearchValue(searchValue);
         event.preventDefault();
     }
 
     onSearch = (event) => {
-        event.preventDefault();
-        const { searchValue } = this.state;
-        searchExternalMovie(searchValue)
+        event && event.preventDefault();
+        searchExternalMovie(this.props.searchValue)
         .then((results) => {
             this.setState({
                 results,
@@ -37,7 +41,7 @@ class AddMovieView extends React.Component {
     clickMovie = (event, index) => {
         event.preventDefault();
 
-        const {addMovie, history} = this.props;
+        const {addMovie, history, genresMappingObj} = this.props;
         const {results} = this.state;
         const movie = results[index];
 
@@ -46,7 +50,7 @@ class AddMovieView extends React.Component {
             overview,
             poster_path,
             backdrop_path,
-            tags
+            genre_ids
         } = movie;
 
         addMovie({
@@ -54,15 +58,15 @@ class AddMovieView extends React.Component {
             overview,
             srcImg: poster_path || backdrop_path,
             watched: false,
-            tags: ['unwatched', ...tags] //TODO
+            genres: [...genre_ids.map(id => genresMappingObj[id])]
         }).then((res) => {
-            this.setState(INITIAL_STATE);
             history.push('/');
         });
     }
 
     render() {
-        const {displayResults, results, searchValue} = this.state;
+        const {displayResults, results} = this.state;
+        const {searchValue} = this.props;
         return (
             <div className='container'>
                 <div className='row justify-content-start mt-3'>
@@ -70,7 +74,7 @@ class AddMovieView extends React.Component {
                         <Link className='btn btn-success float-left' to='/'>Go Back</Link>
                     </div>
                     <div className='col-8'>
-                        <h2 className='text-center'>Add Movie View</h2>
+                        <h2 className='text-center'>Add New Movie</h2>
                     </div>
                 </div>
 
@@ -80,7 +84,6 @@ class AddMovieView extends React.Component {
                         <input
                             type='text'
                             className='form-control'
-                            name='searchValue'
                             value={searchValue}
                             onChange={this.onEditField}
                             onSubmit={this.onSearch}
@@ -91,12 +94,23 @@ class AddMovieView extends React.Component {
                     </div>
                 </form>
                 {displayResults && <ul className='list-group' style={{maxHeight: '500px'}}>
-                        { results.slice(0,10).map((movie, index) =>
-                            <div onClick={(e) => this.clickMovie(e, index)} className='list-group-item card' key={movie.id}>
-                                <h5 className='card-title'>{movie.title}</h5>
+                        { results.slice(0,10).map((movie, index) => //TODO make this display nicer
+                            <div onClick={(e) => this.clickMovie(e, index)} className='list-group-item card movie-card-button' key={movie.id}>
+                                <div className='row'>
+                                    <div className='col-2'>
+                                        <img
+                                            className='card-img-top'
+                                            src={`https://image.tmdb.org/t/p/w${IMAGE_SIZE}/${movie.poster_path || movie.backdrop_path}?api_key=${process.env.REACT_APP_MOVIE_DB_API_KEY}`}
+                                            alt='Movie Cover'
+                                        />
+                                    </div>
 
-                                <div className='card-body'>
-                                    <p className='card-text'>{movie.overview}</p>
+                                    <div className='col-7'>
+                                        <h5 className='card-title'>{movie.title}</h5>
+                                        <div className='card-body'>
+                                            <p className='card-text'>{movie.overview}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         )
@@ -104,8 +118,14 @@ class AddMovieView extends React.Component {
                         }
                     </ul>}
             </div>
-        )
+        );
     }
 }
 
-export default withRouter(connect(null, {addMovie})(AddMovieView));
+const mapStateToProps = (state) => {
+    return {
+        searchValue: state.movies.searchValue,
+        genresMappingObj: state.genres
+    };
+};
+export default withRouter(connect(mapStateToProps, {updateSearchValue, addMovie})(AddMovieView));

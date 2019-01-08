@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchBar from './SearchBar';
 import {connect} from 'react-redux';
-import { updateCustomFilter, updateViewFilter } from 'actions/filters';
+import { updateSearchValue, updateViewFilter } from 'actions/filters';
 import FilterViews from './FilterViews';
 
 const INITIAL_STATE = {
@@ -17,11 +17,9 @@ class ToolBar extends React.Component {
         const target = event.target;
         if (!target) return;
         const searchValue = target.value;
-        this.props.updateCustomFilter(searchValue);
+        this.props.updateSearchValue(searchValue);
 
         event.preventDefault();
-        this.setState({ searchValue });
-
     }
 
     render() {
@@ -40,8 +38,9 @@ class ToolBar extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        viewFilter: state.movies.viewFilter
+        viewFilter: state.movies.viewFilter,
+        searchValue: state.movies.searchValue
     };
 };
 
-export default connect(mapStateToProps, { updateCustomFilter, updateViewFilter })(ToolBar);
+export default connect(mapStateToProps, { updateSearchValue, updateViewFilter })(ToolBar);

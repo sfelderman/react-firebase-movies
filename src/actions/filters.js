@@ -1,12 +1,12 @@
 export const UPDATE_VIEW_FILTER = 'UPDATE_VIEW_FILTER';
-export const UPDATE_CUSTOM_FILTER = 'UPDATE_CUSTOM_FILTER';
+export const UPDATE_SEARCH_VALUE = 'UPDATE_SEARCH_VALUE';
 export const VIEW_ALL = 'VIEW_ALL';
 export const VIEW_WATCHED = 'VIEW_WATCHED';
 export const VIEW_UNWATCHED = 'VIEW_UNWATCHED';
 
-export const updateCustomFilter = payload => {
+export const updateSearchValue = payload => {
     return {
-        type: UPDATE_CUSTOM_FILTER,
+        type: UPDATE_SEARCH_VALUE,
         payload
     };
 };
@@ -18,7 +18,7 @@ export const updateViewFilter = payload => {
     };
 };
 
-export const applyFilter = (movies, viewFilter, customFilter) => {
+export const applyFilter = (movies, viewFilter, SearchValue) => {
     const remainingMovies = viewFilter === VIEW_ALL
         ? [...movies]
         : movies.filter(movie => {
@@ -28,10 +28,10 @@ export const applyFilter = (movies, viewFilter, customFilter) => {
                 return !movie.watched;
     });
 
-    if (customFilter) {
-        if (customFilter.includes('#')) { //tags
+    if (SearchValue) {
+        if (SearchValue.includes('#')) { //tags
             // const moviesToKeep = [...movies];
-            // const searchTags = customFilter.split('#').splice(1);
+            // const searchTags = SearchValue.split('#').splice(1);
             // if (!searchTags[0].length) return [...movies];
             // return moviesToKeep.filter(movie => {
             //     let valid = false;
@@ -47,7 +47,7 @@ export const applyFilter = (movies, viewFilter, customFilter) => {
             // });
             return [...remainingMovies];
         } else { //lowercase search by title
-            return remainingMovies.filter(movie => movie.title.toLowerCase().includes( customFilter.toLowerCase() ));
+            return remainingMovies.filter(movie => movie.title.toLowerCase().includes( SearchValue.toLowerCase() )); // TODO make order not matter
         }
     }
     return [...remainingMovies];

@@ -6,7 +6,7 @@ const HomePage = () => {
 	return (
 		<div className='container'>
 			<div className='row justify-content-center mt-3'>
-					<h2 className='text-center'>Your Movies</h2>
+				<h2 className='text-center'>Your Movies</h2>
 			</div>
 			<ToolBar/>
 			<MovieList/>

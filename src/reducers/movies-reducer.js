@@ -2,7 +2,7 @@ import { FETCH_MOVIES } from 'actions/movies-actions';
 import {
     applyFilter,
     UPDATE_VIEW_FILTER,
-    UPDATE_CUSTOM_FILTER,
+    UPDATE_SEARCH_VALUE,
     VIEW_ALL
  } from 'actions/filters';
 
@@ -10,7 +10,7 @@ export const INITIAL_STATE = {
     allMovies: [],
     filteredList: [],
     viewFilter: VIEW_ALL,
-    customFilter: ''
+    searchValue: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -26,21 +26,21 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 allMovies,
-                filteredList: applyFilter(allMovies, state.viewFilter, state.customFilter)
+                filteredList: applyFilter(allMovies, state.viewFilter, state.searchValue)
             };
         case UPDATE_VIEW_FILTER:
             const viewFilter = action.payload;
             return {
                 ...state,
-                filteredList: applyFilter(state.allMovies, viewFilter, state.customFilter),
+                filteredList: applyFilter(state.allMovies, viewFilter, state.searchValue),
                 viewFilter
             };
-        case UPDATE_CUSTOM_FILTER:
-            const customFilter = action.payload;
+        case UPDATE_SEARCH_VALUE:
+            const searchValue = action.payload;
             return {
                 ...state,
-                filteredList: applyFilter(state.allMovies, state.viewFilter, customFilter),
-                customFilter
+                filteredList: applyFilter(state.allMovies, state.viewFilter, searchValue),
+                searchValue
             };
     	default:
       		return state;
