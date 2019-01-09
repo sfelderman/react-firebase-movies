@@ -1,0 +1,1 @@
+export const ADD_MOVIE_ROUTE = 'AddMovie';

@@ -18,7 +18,7 @@ export const updateViewFilter = payload => {
     };
 };
 
-export const applyFilter = (movies, viewFilter, SearchValue) => {
+export const applyFilter = (movies, viewFilter, searchValue) => {
     const remainingMovies = viewFilter === VIEW_ALL
         ? [...movies]
         : movies.filter(movie => {
@@ -28,10 +28,10 @@ export const applyFilter = (movies, viewFilter, SearchValue) => {
                 return !movie.watched;
     });
 
-    if (SearchValue) {
-        if (SearchValue.includes('#')) { //tags
+    if (searchValue) {
+        if (searchValue.includes('#')) { //tags
             // const moviesToKeep = [...movies];
-            // const searchTags = SearchValue.split('#').splice(1);
+            // const searchTags = searchValue.split('#').splice(1);
             // if (!searchTags[0].length) return [...movies];
             // return moviesToKeep.filter(movie => {
             //     let valid = false;
@@ -47,7 +47,38 @@ export const applyFilter = (movies, viewFilter, SearchValue) => {
             // });
             return [...remainingMovies];
         } else { //lowercase search by title
-            return remainingMovies.filter(movie => movie.title.toLowerCase().includes( SearchValue.toLowerCase() )); // TODO make order not matter
+            return remainingMovies.filter( movie => {
+                // prepares the data to be searched on
+                const lowercaseTitle = movie.title.toLowerCase();
+                const movieKeyWords = lowercaseTitle.replace(/[:,"?/]/g,'').split(' ');// strip extra characters from words
+                const searchTokens = searchValue.toLowerCase().split(' ');
+
+                let includesAll = true;
+                searchTokens.forEach( (token, index) => {
+                    if (index === searchTokens.length - 1) { // last token needs only partial match
+                        let partialMatch = false;
+                        movieKeyWords.forEach( word => {
+                            if ( word.includes(token) ) {
+                                partialMatch = true;
+                                return;
+                            }
+                        });
+
+                        if (!partialMatch) {
+                            includesAll = false;
+                            return;
+                        }
+                    }
+                    else { // others need to match words exactly
+                        if (!movieKeyWords.includes(token)) { // TODO might always want partial match
+                            includesAll = false;
+                            return;
+                        }
+                    }
+                });
+                return includesAll;
+
+            });
         }
     }
     return [...remainingMovies];

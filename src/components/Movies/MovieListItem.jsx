@@ -21,12 +21,12 @@ const MovieListItem = ({movie, deleteMovie, toggleWatched}) => {
                         <div className='card-link'>
                             <div className='row justify-content-right my-5'>
                                 <button
-                                    className='btn btn-outline-danger float-right mx-3'
+                                    className='btn btn-outline-danger float-right mx-1'
                                     onClick={() => deleteMovie({...movie})}>
                                     Remove
                                 </button>
                                 <button
-                                    className={`btn btn-outline-${movie.watched ? 'info' : 'dark'} float-right mx-3`}
+                                    className={`btn btn-outline-${movie.watched ? 'info' : 'dark'} float-right mx-1`}
                                     onClick={() => toggleWatched({...movie})}>
                                     {movie.watched ? 'Watched' : 'Unwatched'}
                                 </button>
