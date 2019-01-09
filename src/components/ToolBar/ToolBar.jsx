@@ -3,6 +3,8 @@ import SearchBar from './SearchBar';
 import {connect} from 'react-redux';
 import { updateSearchValue, updateViewFilter } from 'actions/filters';
 import FilterViews from './FilterViews';
+import { withRouter } from 'react-router-dom';
+import { ADD_MOVIE_ROUTE } from 'constants.js';
 
 const INITIAL_STATE = {
     searchValue: ''
@@ -22,12 +24,18 @@ class ToolBar extends React.Component {
         event.preventDefault();
     }
 
+    onSubmit = (event) => {
+        event.preventDefault();
+        this.props.history.push(ADD_MOVIE_ROUTE);
+    }
+
     render() {
         const {searchValue, viewFilter, updateViewFilter} = this.props;
         return (
             <React.Fragment>
                 <FilterViews viewFilter={viewFilter} updateFilter={updateViewFilter}/>
                 <SearchBar
+                    onSubmit={this.onSubmit}
                     onEditSearch={this.onEditSearch}
                     searchValue={searchValue}
                 />
@@ -43,4 +51,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { updateSearchValue, updateViewFilter })(ToolBar);
+export default withRouter(connect(mapStateToProps, { updateSearchValue, updateViewFilter })(ToolBar));

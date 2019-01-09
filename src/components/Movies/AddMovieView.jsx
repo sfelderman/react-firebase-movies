@@ -60,6 +60,7 @@ class AddMovieView extends React.Component {
             watched: false,
             genres: [...genre_ids.map(id => genresMappingObj[id])]
         }).then((res) => {
+            this.props.updateSearchValue('');
             history.push('/');
         });
     }
