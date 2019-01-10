@@ -11,6 +11,7 @@ import fetchWrapper from 'util/fetchWrapper';
 
 import { fetchMovies } from 'actions/movies-actions';
 import { addAllGenres } from 'actions/genres-actions';
+import { checkAndUpdateAuthStatus } from 'actions/user-actions';
 
 import AppRouter from './AppRouter';
 
@@ -27,10 +28,13 @@ const store = createStore(
 );
 
 store.dispatch(fetchMovies());
+store.dispatch(checkAndUpdateAuthStatus());
 
 fetchWrapper(`https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_MOVIE_DB_API_KEY}`)
     .then( res => store.dispatch(addAllGenres(res)) )
     .catch( err => console.error('Unable to fetch genres, ' + err));
+
+
 
 const root = (
     <Provider store={store}>
