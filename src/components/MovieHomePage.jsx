@@ -2,7 +2,7 @@ import React from 'react';
 import {MovieList} from 'components/Movies';
 import {ToolBar} from 'components/ToolBar';
 
-const HomePage = () => {
+const MovieHomePage = ({}) => {
 	return (
 		<div className='container'>
 			<div className='row justify-content-center mt-3'>
@@ -12,6 +12,6 @@ const HomePage = () => {
 			<MovieList/>
 		</div>
 	);
-};
+}
 
-export default HomePage;
+export default MovieHomePage;
