@@ -1,11 +1,15 @@
 
-import { moviesRef } from 'config/firebase';
+import { usersRef } from 'config/firebase';
 import fetchWrapper from 'util/fetchWrapper';
 
 export const FETCH_MOVIES = 'FETCH_MOVIES';
+export const CLEAR_MOVIES = 'CLEAR_MOVIES';
+
+export let unsubscribeSnapshotListener;
+let userMovies = null;
 
 export const addMovie = payload => async dispatch => {
-    return moviesRef.add({
+    return userMovies.add({
         ...payload
     }).then(function(docRef) {
         return docRef;
@@ -15,7 +19,7 @@ export const addMovie = payload => async dispatch => {
 };
 
 export const deleteMovie = payload => async dispatch => {
-	return moviesRef.doc(payload.id).delete().then(function() {
+	return userMovies.doc(payload.id).delete().then(function() {
         console.log('Document successfully deleted!');
         if (payload.callback) {
             payload.callback();
@@ -26,7 +30,7 @@ export const deleteMovie = payload => async dispatch => {
 };
 
 export const toggleWatched = payload => async dispatch => {
-    return moviesRef.doc(payload.id).update({
+    return userMovies.doc(payload.id).update({
         watched: !(payload.watched || false)
     }).catch(error => {
         console.error('Error toggling watched status', error);
@@ -34,16 +38,25 @@ export const toggleWatched = payload => async dispatch => {
 
 };
 
-export const fetchMovies = () => async dispatch => {
-    return moviesRef.onSnapshot(function(querySnapshot) {
+export const fetchMovies = (uid) => async dispatch => {
+    userMovies = usersRef.doc(uid).collection('movies');
+
+    unsubscribeSnapshotListener = usersRef.doc(uid).collection('movies').onSnapshot((subCollectionSnapshot) => {
         let movies = {};
-        querySnapshot.forEach(function(doc) {
+        subCollectionSnapshot.forEach(function(doc) {
             movies[doc.id] = doc.data();
         });
         dispatch({
             type: FETCH_MOVIES,
             payload: movies
         });
+    });
+    return unsubscribeSnapshotListener;
+};
+
+export const clearMovies = () => async dispatch => {
+    dispatch({
+        type: CLEAR_MOVIES
     });
 };
 

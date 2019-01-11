@@ -9,7 +9,6 @@ import combinedReducers from './reducers';
 import reduxThunk from 'redux-thunk';
 import fetchWrapper from 'util/fetchWrapper';
 
-import { fetchMovies } from 'actions/movies-actions';
 import { addAllGenres } from 'actions/genres-actions';
 import { checkAndUpdateAuthStatus } from 'actions/user-actions';
 
@@ -27,7 +26,6 @@ const store = createStore(
     )
 );
 
-store.dispatch(fetchMovies());
 store.dispatch(checkAndUpdateAuthStatus());
 
 fetchWrapper(`https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_MOVIE_DB_API_KEY}`)

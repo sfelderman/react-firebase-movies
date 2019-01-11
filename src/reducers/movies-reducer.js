@@ -1,4 +1,4 @@
-import { FETCH_MOVIES } from 'actions/movies-actions';
+import { FETCH_MOVIES, CLEAR_MOVIES } from 'actions/movies-actions';
 import {
     applyFilter,
     UPDATE_VIEW_FILTER,
@@ -15,6 +15,10 @@ export const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        case CLEAR_MOVIES:
+            return {
+                ...INITIAL_STATE
+            };
         case FETCH_MOVIES:
             const allMovies = [];
             Object.entries(action.payload).forEach(([id, movie]) => {

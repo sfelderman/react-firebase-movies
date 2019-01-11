@@ -1,5 +1,5 @@
 import { auth } from 'config/firebase';
-
+import { fetchMovies, unsubscribeSnapshotListener, clearMovies } from 'actions/movies-actions';
 
 export const CHANGE_AUTH_STATUS = 'CHANGE_AUTH_STATUS';
 export const PENDING = 'Pending';
@@ -18,9 +18,10 @@ export const checkAndUpdateAuthStatus = () => async dispatch => {
         // if user isn't null then we logged in
         if (user) {
           // login
-          console.log('Logged in:', user);
-          dispatch(changeLoginState(LOGGED_IN));
-          // user.uid is identifier
+            console.log('Logged in:', user);
+            dispatch(changeLoginState(LOGGED_IN));
+            dispatch(fetchMovies(user.uid)); // Once logged in fetch movies
+
         } else {
             dispatch(changeLoginState(LOGGED_OUT));
         }
@@ -31,6 +32,8 @@ export const signOut = () => async dispatch => {
     return auth.signOut()
         .then( () => {
           console.log('Signed Out');
+          dispatch(clearMovies());
+          unsubscribeSnapshotListener();
         }, (error) => {
             console.error('Sign Out Error', error);
         });
