@@ -1,17 +1,18 @@
 import {
-    CHANGE_LOGIN_STATE
+    CHANGE_AUTH_STATUS,
+    PENDING
  } from 'actions/user-actions';
 
 export const INITIAL_STATE = {
-    loggedIn: false
+    authStatus: PENDING
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case CHANGE_LOGIN_STATE:
+        case CHANGE_AUTH_STATUS:
             return {
                 ...state,
-                loggedIn: action.payload
+                authStatus: action.payload
             };
     	default:
       		return state;

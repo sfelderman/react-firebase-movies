@@ -1,11 +1,14 @@
 import { auth } from 'config/firebase';
 
 
-export const CHANGE_LOGIN_STATE = 'CHANGE_LOGIN_STATE';
+export const CHANGE_AUTH_STATUS = 'CHANGE_AUTH_STATUS';
+export const PENDING = 'Pending';
+export const LOGGED_IN = 'Logged In';
+export const LOGGED_OUT = 'Logged Out';
 
 export const changeLoginState = (payload) => {
     return {
-        type: CHANGE_LOGIN_STATE,
+        type: CHANGE_AUTH_STATUS,
         payload
     };
 };
@@ -15,13 +18,20 @@ export const checkAndUpdateAuthStatus = () => async dispatch => {
         // if user isn't null then we logged in
         if (user) {
           // login
-          console.log('firebase logged in', user);
-          dispatch(changeLoginState(true))
+          console.log('Logged in:', user);
+          dispatch(changeLoginState(LOGGED_IN));
+          // user.uid is identifier
         } else {
-          // logout
-          console.log('firebase not logged in');
-          dispatch(changeLoginState(false))
+            dispatch(changeLoginState(LOGGED_OUT));
         }
     });
+};
 
+export const signOut = () => async dispatch => {
+    return auth.signOut()
+        .then( () => {
+          console.log('Signed Out');
+        }, (error) => {
+            console.error('Sign Out Error', error);
+        });
 };

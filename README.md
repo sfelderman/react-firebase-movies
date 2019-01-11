@@ -25,3 +25,5 @@
   - Allow filtering on different tags
     - prefix with a # for tag search
     - could also include custom filters on combos of tags
+- Recommendations
+- Make splash screen that does Authentication in background
