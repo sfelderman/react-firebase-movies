@@ -28,7 +28,7 @@ export const uiConfig = {
     ],
     callbacks: {
         // Avoid redirects after sign-in.
-        signInSuccessWithAuthResult: (user) => {return false; }
+        signInSuccessWithAuthResult: (user) => { return false; }
     }
 };
 

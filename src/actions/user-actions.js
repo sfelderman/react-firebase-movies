@@ -15,13 +15,19 @@ export const checkAndUpdateAuthStatus = () => async dispatch => {
         // if user isn't null then we logged in
         if (user) {
           // login
-          console.log('firebase logged in', user);
-          dispatch(changeLoginState(true))
-        } else {
-          // logout
-          console.log('firebase not logged in');
-          dispatch(changeLoginState(false))
+          console.log('Logged in:', user);
+          dispatch(changeLoginState(true));
+          // user.uid is identifier
         }
     });
+};
 
+export const signOut = () => async dispatch => {
+    return auth.signOut()
+        .then( () => {
+          console.log('Signed Out');
+          dispatch(changeLoginState(false));
+        }, (error) => {
+            console.error('Sign Out Error', error);
+        });
 };
