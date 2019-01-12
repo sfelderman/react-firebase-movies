@@ -13,7 +13,6 @@ var config = {
 
 firebase.initializeApp(config);
 
-export const db = firebase.firestore();
 export const auth = firebase.auth();
 
 export const uiConfig = {
@@ -31,6 +30,8 @@ export const uiConfig = {
         signInSuccessWithAuthResult: (user) => { return false; }
     }
 };
+
+export const db = firebase.firestore();
 
 db.settings({
     timestampsInSnapshots: true
@@ -50,9 +51,12 @@ firebase.firestore().enablePersistence()
           // The current browser does not support all of the
           // features required to enable persistence
           // ...
+      } else {
+          console.error('Error in enabling offline', err)
       }
   });
 
-export const moviesRef = db.collection('movies');
+export const usersRef = db.collection('users');
+export let userMovies = null;
 
 export default firebase;
