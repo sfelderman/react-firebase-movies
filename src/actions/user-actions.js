@@ -1,4 +1,4 @@
-import { auth } from 'config/firebase';
+import { auth, usersRef } from 'config/firebase';
 import { fetchMovies, unsubscribeSnapshotListener, clearMovies } from 'actions/movies-actions';
 
 export const CHANGE_AUTH_STATUS = 'CHANGE_AUTH_STATUS';
@@ -18,7 +18,10 @@ export const checkAndUpdateAuthStatus = () => async dispatch => {
         // if user isn't null then we logged in
         if (user) {
           // login
-            console.log('Logged in:', user);
+            usersRef.doc(user.uid).set({
+                loginStatus: LOGGED_IN,
+                isAnonymous: user.isAnonymous
+              },{ merge: true });
             dispatch(changeLoginState(LOGGED_IN));
             dispatch(fetchMovies(user.uid)); // Once logged in fetch movies
 
@@ -29,9 +32,14 @@ export const checkAndUpdateAuthStatus = () => async dispatch => {
 };
 
 export const signOut = () => async dispatch => {
+    const userId = auth.getUid();
+    const isAnon = auth.currentUser.isAnonymous;
     return auth.signOut()
         .then( () => {
-          console.log('Signed Out');
+          usersRef.doc(userId).set({
+            loginStatus: LOGGED_OUT,
+            isAnonymous: isAnon
+          },{ merge: true });
           dispatch(clearMovies());
           unsubscribeSnapshotListener();
         }, (error) => {

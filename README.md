@@ -14,7 +14,9 @@
 - Search
   - searching for a movie - could be combined with tags
   - If not found in the library use external search
-  - Authentication
+- Authentication
+- Don't allow rewrite
+- Remove all data from Anon users after logout - uses cloud function hook
 
 
 ### To Be Added
@@ -27,7 +29,6 @@
     - prefix with a # for tag search
     - could also include custom filters on combos of tags
 - Recommendations
-- Make splash screen that does Authentication in background
-- Don't allow rewrite
+- Make splash screen that does Authentication in background (currently spinner)
 - Algolai search
-- Remove all data from Anon users after logout - can use a function
+

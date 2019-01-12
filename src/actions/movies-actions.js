@@ -9,7 +9,7 @@ export let unsubscribeSnapshotListener;
 let userMovies = null;
 
 export const addMovie = payload => async dispatch => {
-    return userMovies.add({
+    return userMovies.doc(payload.title).set({
         ...payload
     }).then(function(docRef) {
         return docRef;
