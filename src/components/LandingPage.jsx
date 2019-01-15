@@ -12,7 +12,7 @@ const LandingPage = ({authStatus, signOut}) => {
         case PENDING: //TODO turn this into a splash screen
             return <Spinner message={'Loading App'} />;
         case LOGGED_OUT:
-            return <Redirect to={`/${LOGIN_ROUTE}`}/>;
+            return <Redirect to={LOGIN_ROUTE}/>;
         default: // LOGGED_IN
             return <MovieHomePage signOut={signOut}/>;
     }

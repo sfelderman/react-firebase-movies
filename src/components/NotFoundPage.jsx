@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { HOMEPAGE_ROUTE } from 'constants.js';
 
 export default() => (
  <div className='container'>
@@ -14,7 +15,7 @@ export default() => (
                     Sorry, an error has occured, Requested page not found!
                 </div>
                 <div className='error-actions'>
-                    <Link className='btn btn-primary btn-lg' to='/'>Back to the HomePage</Link>
+                    <Link className='btn btn-primary btn-lg' to={HOMEPAGE_ROUTE}>Back to the HomePage</Link>
                 </div>
             </div>
         </div>
