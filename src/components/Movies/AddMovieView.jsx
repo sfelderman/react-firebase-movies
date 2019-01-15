@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { addMovie, searchExternalMovie } from 'actions/movies-actions';
 import { updateSearchValue } from 'actions/filters';
+import { HOMEPAGE_ROUTE } from 'constants.js';
 import 'styles/AddMovieView.css';
 
 const IMAGE_SIZE = 185;
@@ -61,7 +62,7 @@ class AddMovieView extends React.Component {
             genres: [...genre_ids.map(id => genresMappingObj[id])]
         }).then((res) => {
             this.props.updateSearchValue('');
-            history.push('/');
+            history.push(HOMEPAGE_ROUTE);
         });
     }
 
@@ -72,7 +73,7 @@ class AddMovieView extends React.Component {
             <div className='container'>
                 <div className='row justify-content-start mt-3'>
                     <div className='col-2'>
-                        <Link className='btn btn-success float-left' to='/'>Go Back</Link>
+                        <Link className='btn btn-success float-left' to={HOMEPAGE_ROUTE}>Go Back</Link>
                     </div>
                     <div className='col-8'>
                         <h2 className='text-center'>Add New Movie</h2>

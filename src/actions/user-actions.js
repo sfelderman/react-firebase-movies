@@ -31,9 +31,31 @@ export const checkAndUpdateAuthStatus = () => async dispatch => {
     });
 };
 
+export const createUserWithEmailAndPassword = (email, password) => async dispatch => {
+    return auth.createUserWithEmailAndPassword(email, password);
+    // .catch(function(error) {
+    //     // Handle Errors here.
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     console.error(errorMessage);
+    //     // ...
+    // });
+};
+
+export const signInWithEmailAndPassword = (email, password) => async dispatch => {
+    return auth.signInWithEmailAndPassword(email, password);
+    // .catch(function(error) {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     console.error(errorMessage);
+    //     throw error;
+    // });
+};
+
 export const signOut = () => async dispatch => {
     const userId = auth.getUid();
-    const isAnon = auth.currentUser.isAnonymous;
+    const currentUser = auth.currentUser;
+    const isAnon = currentUser.isAnonymous;
     return auth.signOut()
         .then( () => {
           usersRef.doc(userId).set({

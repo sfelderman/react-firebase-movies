@@ -10,7 +10,7 @@
 ### Added
 - Toggle Watched
   - Each Movie has a button/indicator showing weather it has been watched before or not
-- Simple filtering should be `All`, `Watched`, `Unwatched` -    defaults to `All`
+- Simple filtering should be `All`, `Watched`, `Unwatched` -  defaults to `All`
 - Search
   - searching for a movie - could be combined with tags
   - If not found in the library use external search
@@ -30,5 +30,9 @@
     - could also include custom filters on combos of tags
 - Recommendations
 - Make splash screen that does Authentication in background (currently spinner)
-- Algolai search
-
+- Algolia search
+- Make a demo account
+- Send verification email
+- Convert to a logged in version
+- Leave reviews and comments on movies
+- Edit user info (name, etc.)
