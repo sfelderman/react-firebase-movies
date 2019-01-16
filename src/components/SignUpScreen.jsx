@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { LOGGED_IN, createUserWithEmailAndPassword } from 'actions/user-actions';
 import { Redirect } from 'react-router-dom';
 import { HOMEPAGE_ROUTE } from 'constants.js';
+import {Container, Button, Input, Header, Form, Label} from 'semantic-ui-react';
 
 class SignInScreen extends React.Component {
 	state = {
@@ -20,7 +21,7 @@ class SignInScreen extends React.Component {
 	}
 
 	onSubmit = (event) => {
-        const {email, password, retypePassword} = this.state;
+		const {email, password, retypePassword} = this.state;
         const {createUserWithEmailAndPassword} = this.props;
         event.preventDefault();
         if (password !== retypePassword) return; // TODO deal with error
@@ -43,10 +44,42 @@ class SignInScreen extends React.Component {
 			return <Redirect to={HOMEPAGE_ROUTE}/>;
 
 		return (
-			<div className='container'>
-                <h1 className='text-center'>Sign Up With Email and Password</h1>
+			<Container>
 				<br/>
-				<div className='row justify-content-center'>
+				<Header textAlign='center' size='huge'>Sign Up With Email and Password</Header>
+				<br/>
+				<Form onSubmit={this.onSubmit}>
+					<Form.Input
+						label='Email'
+						placeholder='Enter your email'
+						type='email'
+						name='email'
+						value={email}
+						onChange={this.onEditField}
+						required
+						autoFocus
+					/>
+					<Form.Input
+						label='Password'
+						placeholder='Enter your password'
+						type='password'
+						name='password'
+						value={password}
+						onChange={this.onEditField}
+						required
+					/>
+					<Form.Input
+						label='Retype Your Password'
+						placeholder='Enter your password again'
+						type='password'
+						name='retypePassword'
+						value={retypePassword}
+						onChange={this.onEditField}
+						required
+					/>
+					<Button positive>Sign-Up</Button>
+				</Form>
+				{/* <div className='row justify-content-center'>
 						<form onSubmit={this.onSubmit} className='container row justify-content-center' >
 							<div className='form-group col-8 '>
 								<label>Email</label>
@@ -87,12 +120,10 @@ class SignInScreen extends React.Component {
 							</div>
                             <div className='form-group col-8'>
 							    <button className='btn btn-success'>Sign-Up</button>
-
                             </div>
-
-						</form>
-				</div>
-			</div>
+					</form> */}
+				{/* </div> */}
+			</Container>
 		);
 	}
 }
