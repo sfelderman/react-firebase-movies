@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { LOGGED_IN, createUserWithEmailAndPassword } from 'actions/user-actions';
 import { Redirect } from 'react-router-dom';
 import { HOMEPAGE_ROUTE } from 'constants.js';
-import {Container, Button, Input, Header, Form, Label} from 'semantic-ui-react';
+import {Container, Button, Header, Form} from 'semantic-ui-react';
 
 class SignInScreen extends React.Component {
 	state = {
@@ -79,50 +79,6 @@ class SignInScreen extends React.Component {
 					/>
 					<Button positive>Sign-Up</Button>
 				</Form>
-				{/* <div className='row justify-content-center'>
-						<form onSubmit={this.onSubmit} className='container row justify-content-center' >
-							<div className='form-group col-8 '>
-								<label>Email</label>
-								<input
-									type='email'
-									className='form-control'
-									value={email}
-									name='email'
-									onChange={this.onEditField}
-									placeholder='Enter your email'
-									autoFocus
-									required
-								/>
-							</div>
-							<div className='form-group col-8 '>
-								<label>Password</label>
-								<input
-									type='password'
-									className='form-control'
-									value={password}
-									name='password'
-									onChange={this.onEditField}
-									placeholder='Enter your password'
-									required
-								/>
-							</div>
-							<div className='form-group col-8 '>
-								<label>Retype Your Password</label>
-								<input
-									type='password'
-									className='form-control'
-									value={retypePassword}
-									name='retypePassword'
-									onChange={this.onEditField}
-									placeholder='Enter your password again'
-									required
-								/>
-							</div>
-                            <div className='form-group col-8'>
-							    <button className='btn btn-success'>Sign-Up</button>
-                            </div>
-					</form> */}
-				{/* </div> */}
 			</Container>
 		);
 	}
