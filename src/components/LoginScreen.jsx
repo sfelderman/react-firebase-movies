@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { LOGGED_IN, signInWithEmailAndPassword } from 'actions/user-actions';
 import { Redirect, Link } from 'react-router-dom';
 import { HOMEPAGE_ROUTE, SIGN_UP_ROUTE } from 'constants.js';
+import {Container, Button, Header, Form} from 'semantic-ui-react';
 
 class SignInScreen extends React.Component {
 	state = {
@@ -40,50 +41,45 @@ class SignInScreen extends React.Component {
 			return <Redirect to={HOMEPAGE_ROUTE}/>;
 
 		return (
-			<div className='container'>
-				<h1 className='text-center'>Welcome to the Movie App</h1>
+			<Container>
 				<br/>
-				<div className='row justify-content-center'>
-					<h3 >Sign in With Email and Password</h3>
-						<form className='container row justify-content-center' onSubmit={this.onSubmit}>
-							<div className='form-group col-8 '>
-								<label>Email</label>
-								<input
-									type='email'
-									className='form-control'
-									value={email}
-									name='email'
-									onChange={this.onEditField}
-									placeholder='Enter your email'
-									autoFocus
-									required
-								/>
-							</div>
-							<div className='form-group col-8 '>
-								<label>Password</label>
-								<input
-									type='password'
-									className='form-control'
-									value={password}
-									name='password'
-									onChange={this.onEditField}
-									placeholder='Enter your password'
-									required
-								/>
-							</div>
-							<div className='form-inline col-8 '>
-								<Link className='col-auto btn btn-info' to={SIGN_UP_ROUTE}>Sign-Up</Link>
-								<div className='col'/>
-								<button className='col-auto btn btn-primary'>Login</button>
-							</div>
-						</form>
-				</div>
+				<Header as='h1' size='huge' textAlign='center'>Welcome to the Movie App</Header>
 				<br/>
-				<p className='text-center'>Or use an alternative method</p>
-				<div className='row justify-content-center'>
-					<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth}/>
-				</div>
-			</div>
+				<Header as='h3'textAlign='center' >Sign in With Email and Password</Header>
+
+				<Form onSubmit={this.onSubmit}>
+					<Form.Input
+						type='email'
+						value={email}
+						name='email'
+						onChange={this.onEditField}
+						label='Email'
+						placeholder='Enter your email'
+						required
+						autoFocus
+					/>
+					<Form.Input
+						type='password'
+						value={password}
+						name='password'
+						onChange={this.onEditField}
+						label='Password'
+						placeholder='Enter your password'
+						required
+					/>
+					<Button.Group>
+						<Button positive>Login</Button>
+						<Button.Or />
+						<Button >
+							<Link to={SIGN_UP_ROUTE}>Create a New Account</Link>
+						</Button>
+					</Button.Group>
+				</Form>
+				<br/>
+				<Header textAlign='center'>Or use an alternative method</Header>
+				<br />
+				<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth}/>
+			</Container>
 		);
 	}
 }

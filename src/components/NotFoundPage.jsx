@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { HOMEPAGE_ROUTE } from 'constants.js';
-import {Container, Button, Header, Form} from 'semantic-ui-react';
+import {Container, Button, Header} from 'semantic-ui-react';
 
 export default() => (
  <Container text textAlign='center'>
