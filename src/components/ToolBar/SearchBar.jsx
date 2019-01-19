@@ -1,32 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Grid, Form, FormGroup, Button, Container } from 'semantic-ui-react';
+
 
 const SearchBar = ({searchValue, onEditSearch, onSubmit}) => {
     return (
-        <div className='row justify-content-right'>
-            <div className='col-2'/>
-
-            <div className='col-8'>
-                <form className='form-inline' onSubmit={onSubmit}>
-                    <div className='container-fluid'>
-                        <div className='row justify-content-end'>
-                            <input
-                                type='text'
-                                name='searchValue'
-                                className='col mr-3 form-control'
-                                value={searchValue}
-                                onChange={onEditSearch}
-                                placeholder='Search Movies'
-                                autoFocus
-                            />
-                            <Link className='col-auto btn btn-success' to='AddMovie'>
-                                Search External
-                            </Link>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <Container fluid text textAlign='center'>
+        <Form onSubmit={onSubmit}>
+            <FormGroup inline>
+                <Form.Input width={8}
+                    type='text'
+                    name='searchValue'
+                    value={searchValue}
+                    onChange={onEditSearch}
+                    placeholder='Search Movies'
+                    autoFocus
+                />
+                <Button positive>
+                    <Link color='grey' to='AddMovie'>
+                    Search External
+                    </Link>
+                </Button>
+            </FormGroup>
+        </Form>
+        </Container>
     );
 };
 

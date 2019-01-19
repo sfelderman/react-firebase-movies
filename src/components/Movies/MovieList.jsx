@@ -2,28 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import MovieListItem from './MovieListItem';
 import { deleteMovie, toggleWatched } from 'actions/movies-actions';
-import {Container, Card, Image, Button, Header, Form, Grid, GridColumn} from 'semantic-ui-react';
-
-import 'styles/movieList.css';
+// import 'styles/movieList.css';
+import { Container, Grid } from 'semantic-ui-react';
 
 const MovieList = ({movies, deleteMovie, toggleWatched}) => {
     return (
-        <Grid className='MovieList'>
+        <Grid container columns={3} className='MovieList'>
+            {/* <div className='row mt-3 justify-content-center'> */}
             {
                 movies.map( movie =>
                     <MovieListItem key={movie.id} movie={movie} deleteMovie={deleteMovie} toggleWatched={toggleWatched} />
                 )
             }
+            {/* </div> */}
         </Grid>
-        // <div className='MovieList container'>
-        //     <div className='row mt-3 justify-content-center'>
-        //     {
-        //         movies.map( movie =>
-        //             <MovieListItem key={movie.id} movie={movie} deleteMovie={deleteMovie} toggleWatched={toggleWatched} />
-        //         )
-        //     }
-        //     </div>
-        // </div>
     );
 };
 

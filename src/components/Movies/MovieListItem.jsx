@@ -5,7 +5,7 @@ const IMAGE_SIZE = 500;
 
 const MovieListItem = ({movie, deleteMovie, toggleWatched}) => {
     return (
-        <GridColumn>
+        // <Grid.Column>
             <Card>
                 <Image >
                     <Image
@@ -16,9 +16,9 @@ const MovieListItem = ({movie, deleteMovie, toggleWatched}) => {
                 <Card.Content>
                     <Card.Header>{movie.title}</Card.Header>
                     <Card.Meta>
-                        <span className='date'>{movie.date}</span>
+                        <span className='date'>{movie.release_date}</span>
                     </Card.Meta>
-                    <Card.Description>{movie.overview}</Card.Description>
+                    {/* <Card.Description>{movie.overview}</Card.Description> */}
 
                     <Button negative onClick={() => deleteMovie({...movie})}>Remove</Button>
                     <Button
@@ -29,7 +29,7 @@ const MovieListItem = ({movie, deleteMovie, toggleWatched}) => {
                     </Button>
                 </Card.Content>
             </Card>
-        </GridColumn>
+        // </Grid.Column>
 
         
         // <div className='MovieListItem col-8 card mx-2 mb-3'>

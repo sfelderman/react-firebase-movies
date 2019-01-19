@@ -51,12 +51,14 @@ class AddMovieView extends React.Component {
             overview,
             poster_path,
             backdrop_path,
-            genre_ids
+            genre_ids,
+            release_date
         } = movie;
 
         addMovie({
             title,
             overview,
+            release_date,
             srcImg: poster_path || backdrop_path,
             watched: false,
             genres: [...genre_ids.map(id => genresMappingObj[id])]
